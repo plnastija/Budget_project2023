@@ -7,7 +7,6 @@ public enum KategorijaPaj {
     mon ("Montavimo darbas"),
     pr("Projektavimas");
 
-
     private  String pajPavadinimas;
     KategorijaPaj ( String pajPavadinimass ) {
         this.pajPavadinimas = pajPavadinimass;
@@ -17,5 +16,4 @@ public enum KategorijaPaj {
 
         return pajPavadinimas;
     }
-
 }

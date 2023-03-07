@@ -7,7 +7,6 @@ public enum KategorijaIsl {
     sr1sav ("Sirena MR300RL savikaina"),
     sub ("Subranga darbas");
 
-
     private  String islpavadinimas;
     KategorijaIsl ( String islpavadinimas ){
 

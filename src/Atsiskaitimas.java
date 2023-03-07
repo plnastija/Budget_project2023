@@ -8,9 +8,7 @@ public enum Atsiskaitimas {
         this.pav = pav;
     }
     public String getPav(){
-
         return pav;
     }
-
 }
 

@@ -3,6 +3,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 class PajamuIrasas {
+    private static int pajCount = 0;
+    private final int pajId;
     private  double sumaPaj;
     private final LocalDateTime timePaj;
     private  String kategorijaPaj;
@@ -11,14 +13,21 @@ class PajamuIrasas {
     private String papildomaInfoPaj;
 
     public PajamuIrasas (double sumaPaj,  String kategorijaPaj, String atsiskaitimas, String papildomaInfoPaj) {
+        this.pajId = pajCount++;
         this.sumaPaj = sumaPaj;
         this. timePaj = LocalDateTime.now();
         this.kategorijaPaj = kategorijaPaj;
         this.atsiskaitimasPaj = atsiskaitimas;
         this.papildomaInfoPaj = papildomaInfoPaj;
-
-
     }
+    public static int getPajCount(){
+        return pajCount;
+    }
+
+    public int getPajId() {
+        return pajId;
+    }
+
     public double getSumaPaj(){
         return sumaPaj;
     }
@@ -48,11 +57,13 @@ class PajamuIrasas {
     @Override
     public String toString(){
         return String.format("""
-                 Pajamu suma: %.2f Eur|
-                 Pajamu kategorija %s|
-                 Pajamu atsiskaitimas %s|
+                 Pajamų id: %d |
+                 Pajamų suma: %.2f Eur|
+                 Pajamų kategorija %s|
+                 Pajamų atsiskaitimas %s|
                  Papildoma informacija %s|
-                 Ivedimo laikas %s""", sumaPaj, kategorijaPaj,atsiskaitimasPaj,papildomaInfoPaj, timePaj.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                 Ivedimo laikas %s""".replaceAll("\n", " "),
+                pajId, sumaPaj, kategorijaPaj,atsiskaitimasPaj,papildomaInfoPaj, timePaj.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 }
 

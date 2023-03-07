@@ -3,6 +3,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 class Islaiduirasas {
+    private static int islCount = 0;
+    private final int islId;
     private double sumaIsl;
     private final LocalDateTime  timeIsl;
     private String kategorijaIsl;
@@ -10,14 +12,19 @@ class Islaiduirasas {
     private String papildomaIsl;
 
     public Islaiduirasas (double sumaIsl,  String kategorijaIsl, String atsiskaitimas, String papildomaIsl){
+        this.islId = islCount++;
         this.sumaIsl = sumaIsl;
         this. timeIsl =  LocalDateTime.now();
         this. kategorijaIsl = kategorijaIsl;
         this.atsiskaitimasIsl = atsiskaitimas;
         this. papildomaIsl = papildomaIsl;
     }
-
-
+    public static int getIslCount(){
+        return islCount;
+    }
+    public int getIslId(){
+        return islId;
+    }
     public double getSumaIsl(){
         return sumaIsl;
     }
@@ -49,11 +56,13 @@ class Islaiduirasas {
     @Override
     public String toString(){
         return String.format("""
-                 Islaidu suma: %.2f Eur|
-                 Islaidu kategorija %s|
-                 Islaidu atsiskaitimas %s|
-                 Islaidu informacija %s|
-                 islaidu laikas %s""", sumaIsl, kategorijaIsl,atsiskaitimasIsl,papildomaIsl, timeIsl.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                 Įslaių  id: %d |
+                 Įslaių suma: %.2f Eur|
+                 Įslaių kategorija %s|
+                 Įslaių atsiskaitimas %s|
+                 Įslaių informacija %s|
+                 Įslaių laikas %s""".replaceAll("\n", " "),
+                islId, sumaIsl, kategorijaIsl,atsiskaitimasIsl,papildomaIsl, timeIsl.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 
 }
