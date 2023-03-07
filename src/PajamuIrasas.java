@@ -1,69 +1,43 @@
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
-class PajamuIrasas {
-    private static int pajCount = 0;
-    private final int pajId;
-    private  double sumaPaj;
-    private final LocalDateTime timePaj;
+class PajamuIrasas extends Irasas {
+
     private  String kategorijaPaj;
-    private  String atsiskaitimasPaj;
 
-    private String papildomaInfoPaj;
-
-    public PajamuIrasas (double sumaPaj,  String kategorijaPaj, String atsiskaitimas, String papildomaInfoPaj) {
-        this.pajId = pajCount++;
-        this.sumaPaj = sumaPaj;
-        this. timePaj = LocalDateTime.now();
+    public PajamuIrasas (double suma, String kategorijaPaj, String atsiskaitimas, String papildomaInfo) {
+        super(suma, atsiskaitimas, papildomaInfo);
         this.kategorijaPaj = kategorijaPaj;
-        this.atsiskaitimasPaj = atsiskaitimas;
-        this.papildomaInfoPaj = papildomaInfoPaj;
-    }
-    public static int getPajCount(){
-        return pajCount;
+
     }
 
-    public int getPajId() {
-        return pajId;
-    }
-
-    public double getSumaPaj(){
-        return sumaPaj;
-    }
-    public LocalDateTime getTimePaj(){
-        return timePaj;
-    }
     public String getKategorijaPaj(){ return kategorijaPaj;}
-    public String getAtsiskaitimas() {return atsiskaitimasPaj;}
-    public String getPapildomaInfoPaj(){
-        return papildomaInfoPaj;
-    }
 
-    public  double setSumaPaj(double sumaPaj) {
-        this.sumaPaj = sumaPaj;
-        return sumaPaj;
-    }
+
     public void setKategorijaPaj(String kategorijaPaj){
         this.kategorijaPaj = kategorijaPaj;
-    }
-    public void setAtsiskaitimas(String atsiskaitimas){
-        this.atsiskaitimasPaj = atsiskaitimasPaj;
-    }
-    public void setPapildomaInfoPaj(String papildomaInfoPaj){
-        this.papildomaInfoPaj = papildomaInfoPaj;
     }
 
     @Override
     public String toString(){
         return String.format("""
-                 Pajamų id: %d |
-                 Pajamų suma: %.2f Eur|
-                 Pajamų kategorija %s|
-                 Pajamų atsiskaitimas %s|
-                 Papildoma informacija %s|
-                 Ivedimo laikas %s""".replaceAll("\n", " "),
-                pajId, sumaPaj, kategorijaPaj,atsiskaitimasPaj,papildomaInfoPaj, timePaj.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                Pajamas: %s
+                Pajamas kategorija: %s|""",
+                super.toString(), kategorijaPaj);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PajamuIrasas that = (PajamuIrasas) o;
+        return Objects.equals(kategorijaPaj, that.kategorijaPaj);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), kategorijaPaj);
     }
 }
+
 
