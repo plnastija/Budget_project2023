@@ -4,36 +4,30 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Biudzetas b1 = new Biudzetas();
-
-
         Scanner in = new Scanner(System.in);
         int pasirinkimas;
         boolean runnig = true;
         while (runnig){
             System.out.println("""
-                  
-                  [3] - Atspausdinti pajamas (nesigauna)
-                  
-                  [5] - Prideti Pajamas/Islaidas
-                  [6] - Ištrinti išlaidas
-                  
+                  [1] - Įvesti įrašą
+                  [2] - Atspausdinti bendrą sąrašą
+                  [3] - Ištrinti įrašą
+                  [4] - Balansas
+                  [5] - Atspausdinti pajamas
+                  [6] - Atspausdinti išlaidas
+                  [7] - Pakeisti įrašą
                   [8] - Baigti programa
-                  [9] - Gauti Pajamas/Islaidas
-                  [10] - Pakeisti irasa
                   Iveskite pasirinkta Nr.:\s""");
             pasirinkimas = in.nextInt();
 
             switch (pasirinkimas){
-                //case 1 -> Biudzetas.pridetiPajamuIrasas(b1.pajamas);
-                //case 2 -> Biudzetas.pridetiIslaiduIrasas(b1.islaidos);
-                case 3 -> Biudzetas.gautiPaj(b1.irasas);
-                //case 4 -> Biudzetas.gautiIslauIrasas(b1.islaidos);
-                case 5 -> Biudzetas.pridetiIrasas(b1.irasas);
-                case 6 -> Biudzetas.istrintiIrasa(b1.irasas);
-                // case 6 -> Biudzetas.istrintiIslaidas(b1.islaidos);
-                // case 7 -> Biudzetas.balansas(b1.pajamas,b1.islaidos);
-                case 9 -> Biudzetas.gautiPajIsl(b1.irasas);
-                case 10 -> Biudzetas.changeIrasas(b1.irasas);
+                case 1 -> Biudzetas.pridetiIrasas(b1.irasas);
+                case 2 -> Biudzetas.gautiPajIsl(b1.irasas);
+                case 3 -> Biudzetas.istrintiIrasa(b1.irasas);
+                case 4 -> Biudzetas.balansas(b1.irasas);
+                case 5 -> Biudzetas.gautipaj(b1.irasas);
+                case 6 -> Biudzetas.gautiIsl(b1.irasas);
+                case 7 -> Biudzetas.changeIrasas(b1.irasas);
                 case 8 -> runnig = false;
                 default -> System.out.println("Blogas pasirinkimas");
             }

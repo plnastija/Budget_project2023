@@ -1,12 +1,8 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Biudzetas {
     static Scanner sk = new Scanner(System.in);
-
     ArrayList<Irasas> irasas = new ArrayList<>();
-
     static Set<String> katpajiv = Set.of("A001", "A002", "D1", "MK1", "MON", "SR1", "PR"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
     static Set<String> atsiskiv = Set.of("A1", "A2", "A3"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
     static Set<String> katisliv = Set.of("A001SAV", "A002SAV", "TR", "D1SAV", "MK1SAV", "SR1SAV", "SUB"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
@@ -48,17 +44,14 @@ public class Biudzetas {
                 *  (%s) Kliento kortele
                 \n""", Atsiskaitimas.a1, Atsiskaitimas.a2, Atsiskaitimas.a3);
     }
-
     public static double makesuma() {
         System.out.println("Iveskite pajamu suma (PVZ 20,05):");
         double msuma = sk.nextDouble();
         return msuma;
     }
-
     public static KategorijaPaj makeKategorijaPaj() {
         pajamuKategorijaPasirinkimas();
         String kategorijastring = sk.next().toUpperCase();
-
         while (!katpajiv.contains(kategorijastring)) {
             System.out.println("Kategorija įvesta neteisingai");
             pajamuKategorijaPasirinkimas();
@@ -69,7 +62,6 @@ public class Biudzetas {
         System.out.println("Pasirinkta kategorija :" + kategorijap.getPajPavadinimas());
         return kategorijap;
     }
-
     public static KategorijaIsl makeKategorijaIsl() {
         islaiduKategorijaPasirinkimas();
         String kategorijastringis = sk.next().toUpperCase();
@@ -83,7 +75,6 @@ public class Biudzetas {
         System.out.println("Pasirinkta kategorija:" + kategorijais.getIslpavadinimas());
         return kategorijais;
     }
-
     public static Atsiskaitimas makeAtsiskaitimas() {
         atsiskaitimasPasirinkimas();
         String atsiskaitimasstring = sk.next().toUpperCase();
@@ -96,7 +87,6 @@ public class Biudzetas {
         Atsiskaitimas atsiskaitimasp = Atsiskaitimas.valueOf(atsiskaitimasstringenum);
         return atsiskaitimasp;
     }
-
     public static String makeKomentaras() {
         System.out.println("Iveskite komentara ( komentaras negali buti ilgiasnis nei 10 raidz");
         String komentarasp = sk.next();
@@ -107,7 +97,6 @@ public class Biudzetas {
         }
         return komentarasp;
     }
-
     public static PajamuIrasas makePajamas() { // metodas kuris priima parametrus(pajamas) iš vartotojo ir sukuria pajamų irašą (suma, kotegorija, apmokėjimo būdas, komentaras)
         double sumaP = makesuma();
 
@@ -119,7 +108,6 @@ public class Biudzetas {
 
         return new PajamuIrasas(sumaP, kategorijaP.getPajPavadinimas(), atsiskaitimasP.getPav(), komentarijP);
     }
-
     public static Islaiduirasas makeIslaidas() { // metodas kuris priima parametrus (islaidus) iš vartotojo ir ir sukuria išlaidų irašą(suma, kotegorija, apmokėjimo būdas, komentaras)
         double sumaIsl = makesuma();
 
@@ -131,7 +119,6 @@ public class Biudzetas {
 
         return new Islaiduirasas(sumaIsl, kategorijaI.getIslpavadinimas(), atsiskaitimasI.getPav(), komentarijI);
     }
-
     public static void pridetiIrasas(ArrayList<Irasas> irasas) {
         int num;
         boolean ivedimas = true;
@@ -151,7 +138,6 @@ public class Biudzetas {
             }
         }
     }
-
     public static void gautiPajIsl(ArrayList<Irasas> irasas) {
         if (irasas.isEmpty()) {
             System.out.println("Nera įvestu vartotoju");
@@ -161,7 +147,6 @@ public class Biudzetas {
             System.out.println(iras);
         }
     }
-
     public static void istrintiIrasa(ArrayList<Irasas> irasas) { //metodas naudojamas norint vartotojui ištrinti irašą iš bendro sarašo
         gautiPajIsl(irasas);
         System.out.println("Psirinkite pajamų/išlaidų id Nr. kuri norite pašalinti: ");
@@ -175,8 +160,6 @@ public class Biudzetas {
         }
         System.out.println("Įvestas pajamų/išlaidų ID nerastas");
     }
-
-
     public static void changeIrasas(ArrayList<Irasas> irasas) {
         String choice;
         System.out.println("Psirinkite pajamų/išlaidų id Nr. kuri norite redaguoti: ");
@@ -196,7 +179,6 @@ public class Biudzetas {
                     irasas.get(id).setSuma(newSuma);
                     System.out.println("Įrašo suma sekmingai pakeista į: " + newSuma);
                 }
-
                 System.out.println("""
                         Ar norite keisti kategorija?
                         Jeigu taip - paspauskyte : y
@@ -204,105 +186,94 @@ public class Biudzetas {
                         """);
                 choice = sk.next();
                 if (choice.equalsIgnoreCase("y")) {
-                    // System.out.printf("Dabartinis atsiskaitimas yra: %s\n", ((PajamuIrasas) irasas.get(id)).getKategorijaPaj());
-                    int numk;
-                    System.out.println("""
-                            Pasirinkite ką norite įvesti :
-                            [1] - Įvesti pajamų kategorija
-                            [2] - Įvesti išlaidų kategorija
-                            Iveskite pasirinkta Nr.:\s""");
-                    numk = sk.nextInt();
-                    switch (numk) {
-                        case 1 -> {
+                    for (Irasas irasas1 : irasas) {
+                        if (irasas1 instanceof Islaiduirasas) {
+                            KategorijaIsl newkatIs = makeKategorijaIsl();
+                            String newKatIsString = String.valueOf(newkatIs);
+                            ((Islaiduirasas) irasas.get(id)).setKategorijaIsl(newKatIsString);
+                            System.out.println("Kategorija sekmingai pakeista į: " + newKatIsString);
+                        } else {
                             KategorijaPaj newKatPaj = makeKategorijaPaj();
                             String newKatPajString = String.valueOf(newKatPaj);
                             ((PajamuIrasas) irasas.get(id)).setKategorijaPaj(newKatPajString);
                             System.out.println("Kategorija sekmingai pakeista į: " + newKatPajString);
                         }
-                        case 2 -> {
-                            KategorijaIsl newkatIs = makeKategorijaIsl();
-                            String newKatIsString = String.valueOf(newkatIs);
-                            ((Islaiduirasas) irasas.get(id)).setKategorijaIsl(newKatIsString);
-                            System.out.println("Kategorija sekmingai pakeista į: " + newKatIsString);
-                        }
-                        default -> System.out.println("Blogas pasirinkimas");
                     }
-
-                    System.out.println("""
+                }
+                System.out.println("""
                             Ar norite keisti atsiskaitimą?
                             Jeigu taip - paspauskyte : y
                             Jeigu ne - paspauskyte : n
                             """);
-                    choice = sk.next();
-                    if (choice.equalsIgnoreCase("y")) {
-                        System.out.printf("Dabartinis atsiskaitimas yra: %s\n", irasas.get(id).getAtsiskaitimas());
-                        Atsiskaitimas newatsiskaitimas = makeAtsiskaitimas();
-                        irasas.get(id).setAtsiskaitimas(String.valueOf(newatsiskaitimas));
-                        System.out.println("Įrašas atsiskaitimas sekmingai pakeista į: " + newatsiskaitimas);
-                    }
-                    System.out.println("""
+                choice = sk.next();
+                if (choice.equalsIgnoreCase("y")) {
+                    System.out.printf("Dabartinis atsiskaitimas yra: %s\n", irasas.get(id).getAtsiskaitimas());
+                    Atsiskaitimas newatsiskaitimas = makeAtsiskaitimas();
+                    irasas.get(id).setAtsiskaitimas(String.valueOf(newatsiskaitimas));
+                    System.out.println("Įrašas atsiskaitimas sekmingai pakeista į: " + newatsiskaitimas);
+                }
+                System.out.println("""
                             Ar norite keisti komentara?
                             Jeigu taip - paspauskyte : y
                             Jeigu ne - paspauskyte : n
                             """);
-                    choice = sk.next();
-                    if (choice.equalsIgnoreCase("y")) {
-                        System.out.printf("Dabartinis komentaras yra: %s\n", irasas.get(id).getPapildomaInfo());
-                        String newkomentar = makeKomentaras();
-                        irasas.get(id).setPapildomaInfo(newkomentar);
-                        System.out.println("Įrašas komentarij sekmingai pakeista į: " + newkomentar);
+                choice = sk.next();
+                if (choice.equalsIgnoreCase("y")) {
+                    System.out.printf("Dabartinis komentaras yra: %s\n", irasas.get(id).getPapildomaInfo());
+                    String newkomentar = makeKomentaras();
+                    irasas.get(id).setPapildomaInfo(newkomentar);
+                    System.out.println("Įrašas komentarij sekmingai pakeista į: " + newkomentar);
 
-                    }
+                }
 
-                } else {
-                    System.out.println("Irašas su tokiu ID nerastas");
+            } else {
+                System.out.println("Irašas su tokiu ID nerastas");
+            }
+        }
+    }
+    public static double gautiIsl(ArrayList<Irasas> irasas) {
+        if (irasas.isEmpty()) {
+            System.out.println("Nera įvestu vartotoju");
+        }
+        double sumIsl = 0;
+        for (Irasas irasas1 : irasas) {
+            if (!(irasas1 instanceof Islaiduirasas)) {
+                continue;
+            } else  {
+                for (int i = 0; i < 1; i++) {
+                    sumIsl = +irasas1.getSuma();
+                }
+                System.out.println(irasas1);
+            }
+            System.out.println("Bendra išlaidų suma " + sumIsl+ "Eur");
+        }
+        return sumIsl;
+    }
+    public static double gautipaj(ArrayList<Irasas> irasas) {
+        if (irasas.isEmpty()) {
+            System.out.println("Nera įvestu vartotoju");
+        }
+        double sumPaj = 0;
+        for (Irasas irasas2 :irasas) {
+            if (!(irasas2 instanceof PajamuIrasas )) {
+                continue;
+            }else {
+                for (int i = 0; i < 1; i++) {
+                    sumPaj += irasas2.getSuma();
                 }
             }
+            System.out.println(irasas2);
         }
+        System.out.println("Bendra išlaidų suma " + sumPaj + "Eur");
+        return sumPaj;
     }
-    public static void gautiPaj(ArrayList<Irasas> irasas) {
-        int i;
-        //(PajamuIrasas) irasas;
-
-        for (i = 0; irasas.size() > i; i++){
-
-
-
-            //System.out.println(irasas.get(i).);
-            //if(((Islaiduirasas) irasas.get(i)).getKategorijaIsl().equals(KategorijaIsl.sub))
-            //continue;
-            for (Irasas elenentaipaj : irasas){
-                System.out.println();
-
-            }
-            //if(katpajiv.equals(((PajamuIrasas) irasas.get(i)).getKategorijaPaj())){
-
-            //  System.out.println(((PajamuIrasas) irasas.get(i)).getKategorijaPaj());
-
-            //((PajamuIrasas) irasas.get()).getKategorijaPaj();
-            // ((Islaiduirasas) irasas.get(i)).getKategorijaIsl();
-        }
-
-
-        //String a = ((PajamuIrasas) irasas.get(i)).getKategorijaPaj();
-        //String x = ((Islaiduirasas) irasas.get(i)).getKategorijaIsl();
-
-        //if ( (katpajiv.contains(a.toUpperCase()))&&(!katpajiv.contains(x.toUpperCase()))) {
-
-
+    public static double balansas(ArrayList<Irasas> irasas ) { // metodas skaičiuoja bendra pajamų išlaidų balansą
+        double balansassum ;
+        balansassum = gautipaj(irasas) - gautiIsl(irasas)  ;
+        System.out.println("Balansas:" + balansassum +" Eur");
+        return balansassum;
     }
 }
-
-//}
-            /*if (irasas.isEmpty()) {
-                System.out.println("Nera įvestu vartotoju");
-                return;
-            }*/
-//}
-// }
-
-
-
 
 
 

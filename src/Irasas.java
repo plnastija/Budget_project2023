@@ -17,7 +17,6 @@ public class Irasas {
         this.ID = Count++;
         this.suma = suma;
         this.time = LocalDateTime.now();
-
         this.atsiskaitimas = atsiskaitimas;
         this.papildomaInfo = papildomaInfo;
     }
