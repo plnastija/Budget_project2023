@@ -2,7 +2,9 @@ import java.util.*;
 
 public class Biudzetas {
     static Scanner sk = new Scanner(System.in);
+
     ArrayList<Irasas> irasas = new ArrayList<>();
+
     static Set<String> katpajiv = Set.of("A001", "A002", "D1", "MK1", "MON", "SR1", "PR"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
     static Set<String> atsiskiv = Set.of("A1", "A2", "A3"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
     static Set<String> katisliv = Set.of("A001SAV", "A002SAV", "TR", "D1SAV", "MK1SAV", "SR1SAV", "SUB"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
@@ -52,6 +54,7 @@ public class Biudzetas {
     public static KategorijaPaj makeKategorijaPaj() {
         pajamuKategorijaPasirinkimas();
         String kategorijastring = sk.next().toUpperCase();
+
         while (!katpajiv.contains(kategorijastring)) {
             System.out.println("Kategorija įvesta neteisingai");
             pajamuKategorijaPasirinkimas();
@@ -97,7 +100,9 @@ public class Biudzetas {
         }
         return komentarasp;
     }
-    public static PajamuIrasas makePajamas() { // metodas kuris priima parametrus(pajamas) iš vartotojo ir sukuria pajamų irašą (suma, kotegorija, apmokėjimo būdas, komentaras)
+    public static PajamuIrasas makePajamas() {// metodas kuris priima parametrus(pajamas) iš vartotojo ir sukuria pajamų irašą (suma, kotegorija, apmokėjimo būdas, komentaras)
+        ArrayList<PajamuIrasas> paj = new ArrayList<>();
+
         double sumaP = makesuma();
 
         KategorijaPaj kategorijaP = makeKategorijaPaj();
@@ -174,7 +179,7 @@ public class Biudzetas {
                         """);
                 choice = sk.next();
                 if (choice.equalsIgnoreCase("y")) {
-                    System.out.printf("Dabartinė suma yra: %f\n", irasas.get(id).getSuma());
+                    System.out.printf("Dabartinė suma yra: %.2f\n", irasas.get(id).getSuma());
                     double newSuma = makesuma();
                     irasas.get(id).setSuma(newSuma);
                     System.out.println("Įrašo suma sekmingai pakeista į: " + newSuma);
@@ -227,9 +232,9 @@ public class Biudzetas {
                 }
 
             } else {
-                System.out.println("Irašas su tokiu ID nerastas");
+
             }
-        }
+        }System.out.println("Irašas su tokiu ID nerastas");
     }
     public static double gautiIsl(ArrayList<Irasas> irasas) {
         if (irasas.isEmpty()) {
@@ -267,13 +272,14 @@ public class Biudzetas {
         System.out.println("Bendra išlaidų suma " + sumPaj + "Eur");
         return sumPaj;
     }
-    public static double balansas(ArrayList<Irasas> irasas ) { // metodas skaičiuoja bendra pajamų išlaidų balansą
+    public static void balansas(ArrayList<Irasas> irasas ) { // metodas skaičiuoja bendra pajamų išlaidų balansą
         double balansassum ;
         balansassum = gautipaj(irasas) - gautiIsl(irasas)  ;
         System.out.println("Balansas:" + balansassum +" Eur");
-        return balansassum;
+
     }
 }
+
 
 
 
