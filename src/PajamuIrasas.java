@@ -20,11 +20,9 @@ class PajamuIrasas extends Irasas {
     @Override
     public String toString(){
         return String.format("""
-                Pajamas: %s
-                Pajamas kategorija: %s|""",
-                super.toString(), kategorijaPaj);
+                        Pajamas: kategorija: %s, %s 
+                        """,kategorijaPaj, super.toString());
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

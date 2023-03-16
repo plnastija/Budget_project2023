@@ -17,6 +17,7 @@ public class Irasas {
         this.ID = Count++;
         this.suma = suma;
         this.time = LocalDateTime.now();
+
         this.atsiskaitimas = atsiskaitimas;
         this.papildomaInfo = papildomaInfo;
     }
@@ -57,14 +58,13 @@ public class Irasas {
 
     public String toString(){
         return String.format("""
-                 ID: %d |
-                 Suma: %.2f Eur|
-                 Atsiskaitimas: %s|
-                 Papildoma informacija: %s|
-                 Ivedimo laikas: %s""".replaceAll("\n", " "),
+                 ID: %d ,
+                 Suma: %.2f Eur,
+                 Atsiskaitimas: %s,
+                 Papildoma informacija: %s,
+                 Ivedimo laikas: %s""".replaceAll("\n", ""),
                 ID, suma, atsiskaitimas, papildomaInfo, time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,10 +1,13 @@
+import javax.annotation.processing.FilerException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Biudzetas {
     static Scanner sk = new Scanner(System.in);
-
     ArrayList<Irasas> irasas = new ArrayList<>();
-
     static Set<String> katpajiv = Set.of("A001", "A002", "D1", "MK1", "MON", "SR1", "PR"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
     static Set<String> atsiskiv = Set.of("A1", "A2", "A3"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
     static Set<String> katisliv = Set.of("A001SAV", "A002SAV", "TR", "D1SAV", "MK1SAV", "SR1SAV", "SUB"); // sąrašas naudojamas tikrinimui, tikrina vartotojo įvestus parametrus su Enum reikšmė
@@ -22,7 +25,6 @@ public class Biudzetas {
                         * (%s) Projektavimas \n""", KategorijaPaj.a001, KategorijaPaj.a002,
                 KategorijaPaj.d1, KategorijaPaj.mk1, KategorijaPaj.mon, KategorijaPaj.sr1, KategorijaPaj.pr);
     }
-
     public static void islaiduKategorijaPasirinkimas() { // metodas iskeltas atskirai nes naudosime keliose vietose;
         System.out.println("Iveskite islaidu kategorija (iveskite tik koda kuris skliausteliuose):");
         System.out.printf("""
@@ -36,7 +38,6 @@ public class Biudzetas {
                         * (%s) Subranga darbas\n""", KategorijaIsl.a001sav, KategorijaIsl.a002sav,
                 KategorijaIsl.tr, KategorijaIsl.d1sav, KategorijaIsl.mk1sav, KategorijaIsl.sr1sav, KategorijaIsl.sub);
     }
-
     public static void atsiskaitimasPasirinkimas() { // metodas iskeltas atskirai nes naudosime keliose vietose;
         System.out.println("Iveskite pajamu atsiskaitimo buda:");
         System.out.printf("""
@@ -46,9 +47,21 @@ public class Biudzetas {
                 *  (%s) Kliento kortele
                 \n""", Atsiskaitimas.a1, Atsiskaitimas.a2, Atsiskaitimas.a3);
     }
-    public static double makesuma() {
-        System.out.println("Iveskite pajamu suma (PVZ 20,05):");
-        double msuma = sk.nextDouble();
+    public static double makesuma() { // panaudotas try/catsh metod apdaroja kalida kai iš klaviaturos įvedama raidė
+        boolean sum = true;
+        double msuma = 0;
+        while (sum) {
+            System.out.println("Iveskite pajamu suma (PVZ 20,05):");
+            try {
+                msuma = sk.nextDouble();
+                sum = false;
+            } catch (InputMismatchException | NullPointerException e) {
+                sum = true;
+                sk.nextLine();
+                System.out.println("Pasirinktas neteisingas simbolis pakartoti pasirinkimą");
+
+            }
+        }
         return msuma;
     }
     public static KategorijaPaj makeKategorijaPaj() {
@@ -134,7 +147,12 @@ public class Biudzetas {
                     [2] - Įvesti išlaidas
                     [3] - Baigti įvedimus
                     Iveskite pasirinkta Nr.:\s""");
-            num = sk.nextInt();
+            try {
+                num = sk.nextInt();
+            } catch (InputMismatchException e) {
+                sk.nextLine();
+                num = 0;
+            }
             switch (num) {
                 case 1 -> irasas.add(makePajamas());
                 case 2 -> irasas.add((makeIslaidas()));
@@ -206,10 +224,10 @@ public class Biudzetas {
                     }
                 }
                 System.out.println("""
-                            Ar norite keisti atsiskaitimą?
-                            Jeigu taip - paspauskyte : y
-                            Jeigu ne - paspauskyte : n
-                            """);
+                        Ar norite keisti atsiskaitimą?
+                        Jeigu taip - paspauskyte : y
+                        Jeigu ne - paspauskyte : n
+                        """);
                 choice = sk.next();
                 if (choice.equalsIgnoreCase("y")) {
                     System.out.printf("Dabartinis atsiskaitimas yra: %s\n", irasas.get(id).getAtsiskaitimas());
@@ -218,10 +236,10 @@ public class Biudzetas {
                     System.out.println("Įrašas atsiskaitimas sekmingai pakeista į: " + newatsiskaitimas);
                 }
                 System.out.println("""
-                            Ar norite keisti komentara?
-                            Jeigu taip - paspauskyte : y
-                            Jeigu ne - paspauskyte : n
-                            """);
+                        Ar norite keisti komentara?
+                        Jeigu taip - paspauskyte : y
+                        Jeigu ne - paspauskyte : n
+                        """);
                 choice = sk.next();
                 if (choice.equalsIgnoreCase("y")) {
                     System.out.printf("Dabartinis komentaras yra: %s\n", irasas.get(id).getPapildomaInfo());
@@ -234,8 +252,10 @@ public class Biudzetas {
             } else {
 
             }
-        }System.out.println("Irašas su tokiu ID nerastas");
+        }
+        System.out.println("Irašas su tokiu ID nerastas");
     }
+
     public static double gautiIsl(ArrayList<Irasas> irasas) {
         if (irasas.isEmpty()) {
             System.out.println("Nera įvestu vartotoju");
@@ -244,39 +264,67 @@ public class Biudzetas {
         for (Irasas irasas1 : irasas) {
             if (!(irasas1 instanceof Islaiduirasas)) {
                 continue;
-            } else  {
+            } else {
                 for (int i = 0; i < 1; i++) {
                     sumIsl = +irasas1.getSuma();
                 }
-                System.out.println(irasas1);
             }
-            System.out.println("Bendra išlaidų suma " + sumIsl+ "Eur");
+            System.out.println(irasas1);
         }
+        System.out.println("Bendra išlaidų suma " + sumIsl + "Eur");
         return sumIsl;
     }
+
     public static double gautipaj(ArrayList<Irasas> irasas) {
         if (irasas.isEmpty()) {
             System.out.println("Nera įvestu vartotoju");
         }
         double sumPaj = 0;
-        for (Irasas irasas2 :irasas) {
-            if (!(irasas2 instanceof PajamuIrasas )) {
+        for (Irasas irasas2 : irasas) {
+            if (!(irasas2 instanceof PajamuIrasas)) {
                 continue;
-            }else {
+            } else {
                 for (int i = 0; i < 1; i++) {
                     sumPaj += irasas2.getSuma();
                 }
             }
             System.out.println(irasas2);
         }
-        System.out.println("Bendra išlaidų suma " + sumPaj + "Eur");
+        System.out.println("Bendra pajamų suma " + sumPaj + "Eur");
         return sumPaj;
     }
-    public static void balansas(ArrayList<Irasas> irasas ) { // metodas skaičiuoja bendra pajamų išlaidų balansą
-        double balansassum ;
-        balansassum = gautipaj(irasas) - gautiIsl(irasas)  ;
-        System.out.println("Balansas:" + balansassum +" Eur");
 
+    public static void balansas(ArrayList<Irasas> irasas) { // metodas skaičiuoja bendra pajamų išlaidų balansą
+        double balansassum;
+        balansassum = gautipaj(irasas) - gautiIsl(irasas);
+        System.out.println("Balansas:" + balansassum + " Eur");
+    }
+
+    public static void issaugotiDuomenis(ArrayList<Irasas> irasas) {
+        try {
+            FileWriter fw = new FileWriter("irasas.csv", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (Irasas line : irasas) {
+                bw.write(line.toString());
+                bw.newLine();
+            }
+            System.out.println("Duomenys įrašyti");
+            bw.flush();
+            bw.close();
+            fw.close();
+        } catch (IOException e) {
+            System.out.println("Įvyko klaida: failas neįrašytas");
+        }
+    }
+    public static void gautiDuomenis(ArrayList<Irasas> irasas) {
+        ArrayList<String >list = new ArrayList<>();
+        try (BufferedReader buf = Files.newBufferedReader(Paths.get("irasas.csv"))){
+            list = (ArrayList<String>) buf.lines().collect(Collectors.toList());
+        } catch (IOException e) {
+            System.out.println("Nepavyko realizuoti");
+        }
+        for (String eil : list)
+            System.out.println(eil);
     }
 }
 

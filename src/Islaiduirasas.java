@@ -21,9 +21,8 @@ class Islaiduirasas extends Irasas {
     @Override
     public String toString(){
         return String.format("""
-                Išlaidos: %s
-                Išlaidų kategorija: %s|""",
-                super.toString(), kategorijaIsl);
+                        Išlaidos: kategorija: %s, %s 
+                        """,kategorijaIsl, super.toString());
     }
 
     @Override
